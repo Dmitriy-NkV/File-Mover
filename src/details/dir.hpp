@@ -8,7 +8,16 @@
 
 namespace details
 {
+  class Dir
+  {
+  public:
+    Dir() = default;
+    Dir(const std::vector< FileRule >& rules);
+    ~Dir() = default;
 
+  private:
+    std::vector< FileRule > rules_;
+  };
 }
 
 #endif
