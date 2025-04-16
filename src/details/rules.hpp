@@ -1,6 +1,7 @@
 #ifndef RULES_HPP
 #define RULES_HPP
 
+#include <chrono>
 #include <filesystem>
 #include <vector>
 #include <set>
@@ -9,6 +10,7 @@
 using path = std::filesystem::path;
 using paths = std::vector< std::filesystem::path >;
 using set = std::set< path >;
+using days = std::chrono::duration< int, std::ratio< 86400 > >;
 
 namespace details
 {
@@ -20,6 +22,18 @@ namespace details
 
     path targetDir;
     paths ext;
+    set exceptions;
+  };
+
+  struct MovingByDateRule
+  {
+    template< class PathT, class DaysT, class isGreaterT, class ExceptionsT >
+    MovingByDateRule(PathT&& targetDir, DaysT&& duration, isGreaterT&& isGreaterThanDuration, ExceptionsT&& exceptions);
+    ~MovingByDateRule() = default;
+
+    path targetDir;
+    days duration;
+    bool isGreaterThanDuration;
     set exceptions;
   };
 }
