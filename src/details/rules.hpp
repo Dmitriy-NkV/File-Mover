@@ -36,6 +36,18 @@ namespace details
     bool isGreaterThanDuration;
     set exceptions;
   };
+
+  struct MovingByNameRule
+  {
+    template< class PathT, class NameT, class isCheckT, class ExceptionsT >
+    MovingByNameRule(PathT&& targetDir, NameT&& name, isCheckT&& isCheckRegister, ExceptionsT&& exceptions);
+    ~MovingByNameRule() = default;
+
+    path targetDir;
+    std::string name;
+    bool isCheckRegister;
+    set exceptions;
+  };
 }
 
 #endif
