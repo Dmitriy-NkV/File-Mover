@@ -12,7 +12,7 @@ namespace details
 {
   class Dir
   {
-    public:
+  public:
     Dir() = default;
     Dir(const std::vector< FileRule >& rules);
     ~Dir() = default;
@@ -28,6 +28,12 @@ namespace details
   private:
     std::vector< FileRule > rules_;
   };
+
+  template < class T, class... Args >
+  void Dir::addRule(Args... args)
+  {
+    rules_.emplace_back(std::in_place_type_t< T >{}, std::forward< Args >(args)...);
+  }
 }
 
 #endif
