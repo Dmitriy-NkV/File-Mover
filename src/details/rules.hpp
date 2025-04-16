@@ -48,6 +48,16 @@ namespace details
     bool isCheckRegister;
     set exceptions;
   };
+
+  struct MovingAllRule
+  {
+    template< class PathT, class ExceptionsT >
+    MovingAllRule(PathT&& targetDir, ExceptionsT&& exceptions);
+    ~MovingAllRule() = default;
+
+    path targetDir;
+    set exceptions;
+  };
 }
 
 #endif
