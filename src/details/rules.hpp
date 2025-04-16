@@ -25,6 +25,13 @@ namespace details
     set exceptions;
   };
 
+  template< class PathT, class ExtensionsT, class ExceptionsT >
+  MovingByExtRule::MovingByExtRule(PathT&& targetDir, ExtensionsT&& ext, ExceptionsT&& exceptions):
+    targetDir(std::forward< PathT >(targetDir)),
+    ext(std::forward< ExtensionsT >(ext)),
+    exceptions(std::forward< ExceptionsT >(exceptions))
+  {}
+
   struct MovingByDateRule
   {
     template< class PathT, class DaysT, class isGreaterT, class ExceptionsT >
@@ -36,6 +43,14 @@ namespace details
     bool isGreaterThanDuration;
     set exceptions;
   };
+
+  template< class PathT, class DaysT, class isGreaterT, class ExceptionsT >
+  MovingByDateRule::MovingByDateRule(PathT&& targetDir, DaysT&& duration, isGreaterT&& isGreaterThanDuration, ExceptionsT&& exceptions):
+    targetDir(std::forward< PathT >(targetDir)),
+    duration(std::forward< DaysT >(duration)),
+    isGreaterThanDuration(std::forward< isGreaterT >(isGreaterThanDuration)),
+    exceptions(std::forward< ExceptionsT >(exceptions))
+  {}
 
   struct MovingByNameRule
   {
@@ -49,6 +64,14 @@ namespace details
     set exceptions;
   };
 
+  template< class PathT, class NameT, class isCheckT, class ExceptionsT >
+  MovingByNameRule::MovingByNameRule(PathT&& targetDir, NameT&& name, isCheckT&& isCheckRegister, ExceptionsT&& exceptions):
+  targetDir(std::forward< PathT >(targetDir)),
+  name(std::forward< NameT >(name)),
+  isCheckRegister(std::forward< isCheckT >(isCheckRegister)),
+  exceptions(std::forward< ExceptionsT >(exceptions))
+{}
+
   struct MovingAllRule
   {
     template< class PathT, class ExceptionsT >
@@ -58,6 +81,12 @@ namespace details
     path targetDir;
     set exceptions;
   };
+
+  template< class PathT, class ExceptionsT >
+  MovingAllRule::MovingAllRule(PathT&& targetDir, ExceptionsT&& exceptions):
+    targetDir(std::forward< PathT >(targetDir)),
+    exceptions(std::forward< ExceptionsT >(exceptions))
+  {}
 
   struct DeletingByExtRule
   {
@@ -69,6 +98,13 @@ namespace details
     set exceptions;
   };
 
+  template< class ExtensionsT, class ExceptionsT >
+  DeletingByExtRule::DeletingByExtRule(ExtensionsT&& ext, ExceptionsT&& exceptions):
+    ext(std::forward< ExtensionsT >(ext)),
+    exceptions(std::forward< ExceptionsT >(exceptions))
+  {}
+
+
   struct DeletingByDateRule
   {
     template< class DaysT, class isGreaterT, class ExceptionsT >
@@ -79,6 +115,13 @@ namespace details
     bool isGreaterThanDuration;
     set exceptions;
   };
+
+  template< class DaysT, class isGreaterT, class ExceptionsT >
+  DeletingByDateRule::DeletingByDateRule(DaysT&& duration, isGreaterT&& isGreaterThanDuration, ExceptionsT&& exceptions):
+    duration(std::forward< DaysT >(duration)),
+    isGreaterThanDuration(std::forward< isGreaterT >(isGreaterThanDuration)),
+    exceptions(std::forward< ExceptionsT >(exceptions))
+  {}
 }
 
 #endif
