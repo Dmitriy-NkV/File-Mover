@@ -58,6 +58,16 @@ namespace details
     path targetDir;
     set exceptions;
   };
+
+  struct DeletingByExtRule
+  {
+    template< class ExtensionsT, class ExceptionsT >
+    DeletingByExtRule(ExtensionsT&& ext, ExceptionsT&& exceptions);
+    ~DeletingByExtRule() = default;
+
+    paths ext;
+    set exceptions;
+  };
 }
 
 #endif
