@@ -6,7 +6,6 @@
 #include <variant>
 #include <vector>
 #include <set>
-#include "../additionals/json.hpp"
 
 using path = std::filesystem::path;
 using paths = std::vector< std::filesystem::path >;
