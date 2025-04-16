@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <filesystem>
+#include <variant>
 #include <vector>
 #include <set>
 #include "../additionals/json.hpp"
@@ -122,6 +123,15 @@ namespace details
     isGreaterThanDuration(std::forward< isGreaterT >(isGreaterThanDuration)),
     exceptions(std::forward< ExceptionsT >(exceptions))
   {}
+
+  using FileRule = std::variant<
+    MovingByExtRule,
+    MovingByDateRule,
+    MovingByNameRule,
+    MovingAllRule,
+    DeletingByExtRule,
+    DeletingByDateRule
+  >;
 }
 
 #endif
