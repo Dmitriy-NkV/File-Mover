@@ -68,6 +68,17 @@ namespace details
     paths ext;
     set exceptions;
   };
+
+  struct DeletingByDateRule
+  {
+    template< class DaysT, class isGreaterT, class ExceptionsT >
+    DeletingByDateRule(DaysT&& duration, isGreaterT&& isGreaterThanDuration, ExceptionsT&& exceptions);
+    ~DeletingByDateRule() = default;
+
+    days duration;
+    bool isGreaterThanDuration;
+    set exceptions;
+  };
 }
 
 #endif
