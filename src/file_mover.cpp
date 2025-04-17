@@ -99,3 +99,55 @@ set FileMover::makeRelatieve(fs::path dirName, const set& exceptions) const
     });
   return relatieveExceptions;
 }
+
+details::FileRule FileMover::parseRule(const json& ruleJson) const
+{
+  std::string ruleType = ruleJson.at("ruleType").get<std::string>();
+  if (ruleType == "MovingByExtRule")
+  {
+    path targetDir = ruleJson.at("targetDir");
+    paths ext = ruleJson.at("ext");
+    set exceptions = ruleJson.at("exceptions");
+    return details::MovingByExtRule(targetDir, ext, exceptions);
+  }
+  else if (ruleType == "MovingByDateRule")
+  {
+    path targetDir = ruleJson.at("targetDir");
+    size_t duration = ruleJson.at("duration");
+    bool isGreaterThanDuration = ruleJson.at("isGreaterThanDuration");
+    set exceptions = ruleJson.at("exceptions");
+    return details::MovingByDateRule(targetDir, duration, isGreaterThanDuration, exceptions);
+  }
+  else if (ruleType == "MovingByNameRule")
+  {
+    path targetDir = ruleJson.at("targetDir");
+    std::string name = ruleJson.at("name");
+    bool isCheckRegister = ruleJson.at("isCheckRegister");
+    set exceptions = ruleJson.at("exceptions");
+    return details::MovingByNameRule(targetDir, name, isCheckRegister, exceptions);
+  }
+  else if (ruleType == "MovingAllRule")
+  {
+    path targetDir = ruleJson.at("targetDir");
+    set exceptions = ruleJson.at("exceptions");
+    return details::MovingAllRule(targetDir, exceptions);
+  }
+  else if (ruleType == "DeletingByExtRule")
+  {
+    paths ext = ruleJson.at("ext");
+    set exceptions = ruleJson.at("exceptions");
+    return details::DeletingByExtRule(ext, exceptions);
+  }
+  else if (ruleType == "DeletingByDateRule")
+  {
+    paths ext = ruleJson.at("ext");
+    size_t duration = ruleJson.at("duration");
+    bool isGreaterThanDuration = ruleJson.at("isGreaterThanDuration");
+    set exceptions = ruleJson.at("exceptions");
+    return details::DeletingByDateRule(duration, isGreaterThanDuration, exceptions);
+  }
+  else
+  {
+    throw std::runtime_error("Error: Unknown rule type: " + ruleType);
+  }
+}
