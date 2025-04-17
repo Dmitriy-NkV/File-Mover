@@ -156,6 +156,31 @@ void RuleVisitor::operator()(const MovingByNameRule& rule) const
   }
 }
 
+void RuleVisitor::operator()(const MovingAllRule& rule) const
+{
+  std::vector< path > files;
+  auto options = fs::directory_options::skip_permission_denied;
+  for (auto i = fs::recursive_directory_iterator(dirPath_, options); i != fs::recursive_directory_iterator(); ++i)
+  {
+    bool shouldIgnore = checkFile(fs::relative((*i), dirPath_), rule.exceptions)
+      || fs::equivalent(*i, rule.targetDir);
+
+    if (shouldIgnore && fs::is_directory(*i))
+    {
+      i.disable_recursion_pending();
+    }
+    else if (!shouldIgnore)
+    {
+      files.push_back(*i);
+    }
+  }
+
+  for (auto i = files.begin(); i != files.end(); ++i)
+  {
+    moveFile(dirPath_ / (*i), rule.targetDir);
+  }
+}
+
 void RuleVisitor::moveFile(const path& oldPath, const path& newPath) const
 {
   if (fs::exists(oldPath) && fs::exists(newPath) && !fs::exists(fs::path(newPath) / fs::path(oldPath).filename()))
