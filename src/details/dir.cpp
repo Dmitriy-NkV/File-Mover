@@ -19,3 +19,8 @@ void Dir::deleteRule(size_t index)
     throw std::out_of_range("Error: Index is out of range");
   }
 }
+
+const std::vector< FileRule >& Dir::getRules() const
+{
+  return rules_;
+}
