@@ -27,7 +27,15 @@ public:
   void deleteDir(fs::path dirName);
 
 private:
+  template < class Rule, class... Args >
+  void addRule(fs::path dirName, Args... args);
   std::map< fs::path, details::Dir > dirs_;
 };
+
+template < class Rule, class... Args >
+void FileMover::addRule(fs::path dirName, Args... args)
+{
+  dirs_.at(dirName).addRule< Rule >(std::forward< Args >(args)...);
+}
 
 #endif
