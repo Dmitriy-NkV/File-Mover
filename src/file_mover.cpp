@@ -61,6 +61,24 @@ void FileMover::deleteDir(fs::path dirName)
   }
 }
 
+void FileMover::execDir(fs::path dirName) const
+{
+  auto rules = dirs_.at(dirName).getRules();
+  details::RuleVisitor visitor(dirName);
+  for (auto i = rules.cbegin(); i != rules.cend(); ++i)
+  {
+    std::visit(visitor, (*i));
+  }
+}
+
+void FileMover::execDirs() const
+{
+  for (auto i = dirs_.cbegin(); i != dirs_.cend(); ++i)
+  {
+    execDir(i->first);
+  }
+}
+
 set FileMover::makeRelatieve(fs::path dirName, const set& exceptions) const
 {
   set relatieveExceptions;
