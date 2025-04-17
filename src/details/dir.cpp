@@ -24,3 +24,13 @@ const std::vector< FileRule >& Dir::getRules() const
 {
   return rules_;
 }
+
+json Dir::toJson() const
+{
+  json result = json::array();
+  for (auto i = rules_.cbegin(); i != rules_.cend(); ++i)
+  {
+    result.push_back(std::visit(JsonVisitor(), (*i)));
+  }
+  return result;
+}

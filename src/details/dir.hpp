@@ -5,6 +5,7 @@
 #include <filesystem>
 #include "../additionals/json.hpp"
 #include "rules.hpp"
+#include "visitors.hpp"
 
 using json = nlohmann::json;
 
