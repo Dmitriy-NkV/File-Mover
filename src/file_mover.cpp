@@ -79,6 +79,16 @@ void FileMover::execDirs() const
   }
 }
 
+json FileMover::saveConfig() const
+{
+  json result = json::object();
+  for (auto i = dirs_.cbegin(); i != dirs_.cend(); ++i)
+  {
+    result[i->first] = i->second.toJson();
+  }
+  return result;
+}
+
 set FileMover::makeRelatieve(fs::path dirName, const set& exceptions) const
 {
   set relatieveExceptions;
