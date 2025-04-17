@@ -62,3 +62,21 @@ json JsonVisitor::operator()(const DeletingByDateRule& rule) const
     { "exceptions", rule.exceptions }
   };
 }
+
+void RuleVisitor::moveFile(const path& oldPath, const path& newPath) const
+{
+  if (fs::exists(oldPath) && fs::exists(newPath) && !fs::exists(fs::path(newPath) / fs::path(oldPath).filename()))
+  {
+    fs::rename(oldPath, fs::path(newPath) /= fs::path(oldPath).filename());
+  }
+}
+
+void RuleVisitor::deleteFile(const path& fileName) const
+{
+  fs::remove(fileName);
+}
+
+bool RuleVisitor::checkFile(const path& fileName, const set& exceptions) const
+{
+  return exceptions.find(fileName) != exceptions.cend();
+}
