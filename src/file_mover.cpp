@@ -47,6 +47,20 @@ void FileMover::addRuleToDir(fs::path dirName, days duration, bool isGreaterThan
   addRule< details::DeletingByDateRule >(dirName, duration, isGreaterThanDuration, relatieveExceptions);
 }
 
+void FileMover::deleteRuleFromDir(fs::path dirName, size_t id)
+{
+  dirs_.at(dirName).deleteRule(id);
+}
+
+void FileMover::deleteDir(fs::path dirName)
+{
+  size_t count = dirs_.erase(dirName);
+  if (!count)
+  {
+    throw std::logic_error("Error: Nothing to delete");
+  }
+}
+
 set FileMover::makeRelatieve(fs::path dirName, const set& exceptions) const
 {
   set relatieveExceptions;
