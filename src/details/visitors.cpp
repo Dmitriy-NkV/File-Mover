@@ -181,6 +181,37 @@ void RuleVisitor::operator()(const MovingAllRule& rule) const
   }
 }
 
+void RuleVisitor::operator()(const DeletingByExtRule& rule) const
+{
+  std::vector< path > files;
+  auto options = fs::directory_options::skip_permission_denied;
+  for (auto i = fs::recursive_directory_iterator(dirPath_, options); i != fs::recursive_directory_iterator(); ++i)
+  {
+    bool shouldIgnore = checkFile(fs::relative((*i), dirPath_), rule.exceptions);
+
+    if (shouldIgnore && fs::is_directory(*i))
+    {
+      i.disable_recursion_pending();
+    }
+    else if (! shouldIgnore && fs::is_regular_file(*i))
+    {
+      for (auto j = rule.ext.cbegin(); j != rule.ext.cend(); ++j)
+      {
+        if (fs::equivalent((*i).path().extension(), *j))
+        {
+          files.push_back(*i);
+          break;
+        }
+      }
+    }
+  }
+
+  for (auto i = files.begin(); i != files.end(); ++i)
+  {
+    deleteFile(dirPath_ / (*i));
+  }
+}
+
 void RuleVisitor::moveFile(const path& oldPath, const path& newPath) const
 {
   if (fs::exists(oldPath) && fs::exists(newPath) && !fs::exists(fs::path(newPath) / fs::path(oldPath).filename()))
