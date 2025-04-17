@@ -29,6 +29,8 @@ public:
 private:
   template < class Rule, class... Args >
   void addRule(fs::path dirName, Args... args);
+  set makeRelatieve(fs::path dirName, const set& exceptions) const;
+
   std::map< fs::path, details::Dir > dirs_;
 };
 
