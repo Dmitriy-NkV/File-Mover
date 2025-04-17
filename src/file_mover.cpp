@@ -79,6 +79,27 @@ void FileMover::execDirs() const
   }
 }
 
+void FileMover::importConfig(fs::path configPath)
+{
+  std::ifstream file(configPath);
+  if (!file.is_open())
+  {
+    throw std::runtime_error("Error: Config not found");
+  }
+  json config = json::parse(file);
+  std::map< fs::path, details::Dir > newDirs;
+  for (auto& [dirName, rulesArray]: config.items())
+  {
+    std::vector< details::FileRule > rules;
+    for (auto& ruleJson: rulesArray)
+    {
+      rules.push_back(parseRule(ruleJson));
+    }
+    newDirs[dirName] = details::Dir(rules);
+  }
+  dirs_ = newDirs;
+}
+
 json FileMover::saveConfig() const
 {
   json result = json::object();
