@@ -1,6 +1,7 @@
 #ifndef VISITORS_HPP
 #define VISITORS_HPP
 
+#include <regex>
 #include "../additionals/json.hpp"
 #include "rules.hpp"
 
