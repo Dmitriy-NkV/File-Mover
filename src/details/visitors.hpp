@@ -17,6 +17,25 @@ namespace details
     json operator()(const DeletingByExtRule& rule) const;
     json operator()(const DeletingByDateRule& rule) const;
   };
+
+  struct RuleVisitor
+  {
+  public:
+    RuleVisitor(path dirName);
+
+    void operator()(const MovingByExtRule& rule) const;
+    void operator()(const MovingByDateRule& rule) const;
+    void operator()(const MovingByNameRule& rule) const;
+    void operator()(const MovingAllRule& rule) const;
+    void operator()(const DeletingByExtRule& rule) const;
+    void operator()(const DeletingByDateRule& rule) const;
+
+  private:
+    void moveFile(const path& oldPath, const path& newPath) const;
+    void deleteFile(const path& fileName) const;
+    bool checkFile(const path& fileName, const set& exceptions) const;
+    path dirPath_;
+  };
 }
 
 #endif
