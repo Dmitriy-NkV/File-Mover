@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("File-Mover", "Main");
+    engine.load("C:/Users/Dmitr/Documents/File-Mover/File-Mover/Main.qml");
 
     return app.exec();
 }
