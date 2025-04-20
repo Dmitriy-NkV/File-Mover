@@ -63,6 +63,10 @@ json JsonVisitor::operator()(const DeletingByDateRule& rule) const
   };
 }
 
+RuleVisitor::RuleVisitor(fs::path dirPath):
+  dirPath_(dirPath)
+{}
+
 void RuleVisitor::operator()(const MovingByExtRule& rule) const
 {
   std::vector< path > files;
