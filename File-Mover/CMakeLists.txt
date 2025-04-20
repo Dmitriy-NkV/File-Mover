@@ -25,6 +25,8 @@ qt_add_qml_module(appFile-Mover
         RESOURCES images/file-export.png images/file-import.png images/file-minus.png images/file.png images/pause-button.png images/play-button.png images/setting.png
         QML_FILES RuleManager.qml
         SOURCES file_mover_wrapper.h file_mover_wrapper.cpp
+        SOURCES ../src/file_mover.cpp ../src/file_mover.hpp
+        SOURCES ../src/additionals/json.hpp ../src/details/dir.cpp ../src/details/dir.hpp ../src/details/rules.hpp ../src/details/visitors.cpp ../src/details/visitors.hpp ../src/file_mover.cpp ../src/file_mover.hpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
