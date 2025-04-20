@@ -26,10 +26,17 @@ public:
   void deleteRuleFromDir(fs::path dirName, size_t id);
   void deleteDir(fs::path dirName);
 
+  void execDir(fs::path dirName) const;
+  void execDirs() const;
+
+  void importConfig(fs::path config);
+  json saveConfig() const;
+
 private:
   template < class Rule, class... Args >
   void addRule(fs::path dirName, Args... args);
   set makeRelatieve(fs::path dirName, const set& exceptions) const;
+  details::FileRule parseRule(const json& ruleJson) const;
 
   std::map< fs::path, details::Dir > dirs_;
 };
