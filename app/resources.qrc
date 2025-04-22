@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/DirList.qml</file>
+        <file>qml/DirTaskBar.qml</file>
+        <file>qml/FileManager.qml</file>
+        <file>qml/Main.qml</file>
+        <file>qml/RuleList.qml</file>
+        <file>qml/RuleTaskBar.qml</file>
+        <file>qml/SideMenuButtons.qml</file>
+        <file>qml/TabBar.qml</file>
+        <file>images/file.png</file>
+        <file>images/file-export.png</file>
+        <file>images/file-import.png</file>
+        <file>images/icon.png</file>
+        <file>images/pause-button.png</file>
+        <file>images/play-button.png</file>
+        <file>images/setting.png</file>
+    </qresource>
+</RCC>

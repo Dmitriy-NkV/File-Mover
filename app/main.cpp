@@ -2,8 +2,8 @@
 #include <QQmlContext>
 #include <QApplication>
 #include <QIcon>
-#include "file_mover_wrapper.h"
-#include "tray_icon.h"
+#include "core/file_mover_wrapper.h"
+#include "core/tray_icon.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
   FileMoverWrapper wrapper;
   engine.rootContext()->setContextProperty("fileMover", &wrapper);
-  engine.load(":/Main.qml");
+  engine.load(":/qml/Main.qml");
 
   return app.exec();
 }

@@ -8,7 +8,7 @@ Item {
     ListView {
         id: ruleList
 
-        model: fileMover.rulesModel
+        model: fileMover ? fileMover.rulesModel : []
         anchors.fill: parent
         boundsBehavior: Flickable.StopAtBounds
         currentIndex: -1

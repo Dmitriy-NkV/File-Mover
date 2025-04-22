@@ -25,7 +25,7 @@ Item {
             id: startSortButton
 
             background: Image {
-                source: fileMover ? fileMover.isWatching ? "images/pause-button.png" : "images/play-button.png" :  "images/play-button.png"
+                source: fileMover ? fileMover.isWatching ? "../images/pause-button.png" : "../images/play-button.png" :  "../images/play-button.png"
 
                 sourceSize {
                     width: root.width / 32
@@ -44,7 +44,7 @@ Item {
             enabled: fileMover ? !fileMover.isWatching : true
 
             background: Image {
-                source: "images/file-export.png"
+                source: "../images/file-export.png"
 
                 sourceSize {
                     width: root.width / 32
@@ -63,7 +63,7 @@ Item {
             enabled: fileMover ? !fileMover.isWatching : true
 
             background: Image {
-                source: "images/file-import.png"
+                source: "../images/file-import.png"
 
                 sourceSize {
                     width: root.width / 32
@@ -82,7 +82,7 @@ Item {
             enabled: fileMover ? !fileMover.isWatching : true
 
             background: Image {
-                source: "images/file.png"
+                source: "../images/file.png"
 
                 sourceSize {
                     width: root.width / 32
@@ -108,7 +108,7 @@ Item {
         }
 
         background: Image {
-            source: "images/setting.png"
+            source: "../images/setting.png"
 
             sourceSize {
                 width: root.width / 32
