@@ -1,70 +1,77 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 import QtQuick.Dialogs
-import QtQuick.Layouts
 import QtQuick.Controls.Universal
 
 Item {
-    property int currentListViewIndex: list.currentIndex
+    property alias currentDirIndex: dirList.currentIndex
 
     ListView {
-        id: list
-        anchors.fill: parent
-        boundsBehavior: Flickable.StopAtBounds
-        model: contact
-        delegate: contactDelegate
+        id: dirList
 
+        anchors.fill: parent
+        model: fileMover.dirs
+        boundsBehavior: Flickable.StopAtBounds
+        currentIndex: -1
         clip: true
+
         ScrollBar.vertical: ScrollBar {
-            width: 10
+            width: root.width / 128
             policy: ScrollBar.AlwaysOn
         }
 
         ScrollBar.horizontal: ScrollBar {
-            width: 10
+            width: root.height / 72
             policy: ScrollBar.AlwaysOn
         }
-    }
 
-    Component {
-        id: contactDelegate
-        Rectangle {
-            id: contactDelegateBackground
-            width: fileArea.width
-            height: 40
-            color: list.currentIndex == index ? "#e9ecef" : index % 2 ? secondaryColor : "#ced4da"
+        delegate: Component {
+            Rectangle {
+                width: fileArea.width
+                height: root.height / 18
+                color: dirList.currentIndex == index ? "#e9ecef" : index % 2 ? secondaryColor : "#ced4da"
 
-            Row {
-                spacing: 10
-                Rectangle {
-                    width: 40
-                    height: 40
-                    Text {
-                        text: index + 1
-                        anchors.centerIn: parent
+                Row {
+                    spacing: root.width / 128
+
+                    Rectangle {
+                        width: root.width / 32
+                        height: root.height / 18
+                        color: dirList.currentIndex == index ? "#e9ecef" : "#6c757d"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: index + 1
+                            font {
+                                bold: true
+                                family: mainFont
+                                pixelSize: root.height / 44
+                            }
+                        }
                     }
-                    color: list.currentIndex == index ? "#e9ecef" : "#6c757d"
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: modelData
+                        font {
+                            family: mainFont
+                            pixelSize: root.height / 50
+                        }
+                    }
                 }
 
-                Column {
-                    Text {
-                        text: '<b>Name:</b> ' + dirName
-                    }
-                    Text {
-                        text: '<b>Number of rules:</b> ' + numberOfRules
-                    }
-                }
-            }
+                MouseArea {
+                    anchors.fill: parent
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    list.currentIndex = index
-                }
+                    onClicked: {
+                        dirList.currentIndex = index
+                    }
 
-                onDoubleClicked: {
-                    findIndex(dirName, tabModel) === -1 ? tabModel.append({ dirName: dirName }) : tabBar.currentIndex = findIndex(dirName, tabModel)
-                    tabBar.currentIndex = findIndex(dirName, tabModel)
+                    onDoubleClicked: {
+                        findIndex(modelData, tabBarLoader.item.tabModel) === -1 ? tabBarLoader.item.tabModel.append({ dirName: modelData }) : false
+                        fileMover.rulesModel.loadRulesForDir(tabBarLoader.item.tabModel.get(findIndex(modelData, tabBarLoader.item.tabModel)).dirName)
+                        tabBarLoader.item.currentTabIndex = findIndex(modelData, tabBarLoader.item.tabModel)
+                    }
                 }
             }
         }
