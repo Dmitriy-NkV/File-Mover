@@ -1,4 +1,5 @@
 #include "file_mover.hpp"
+#include <iostream>
 
 void FileMover::addDir(fs::path dirName)
 {
@@ -79,6 +80,16 @@ void FileMover::execDirs() const
   }
 }
 
+paths FileMover::getDirs() const
+{
+    paths dirs;
+    for (auto i = dirs_.cbegin(); i != dirs_.cend(); ++i)
+    {
+        dirs.push_back(i->first);
+    }
+    return dirs;
+}
+
 void FileMover::importConfig(fs::path configPath)
 {
   std::ifstream file(configPath);
@@ -100,14 +111,19 @@ void FileMover::importConfig(fs::path configPath)
   dirs_ = newDirs;
 }
 
-json FileMover::saveConfig() const
+void FileMover::saveConfig(fs::path config) const
 {
   json result = json::object();
   for (auto i = dirs_.cbegin(); i != dirs_.cend(); ++i)
   {
-    result[i->first] = i->second.toJson();
+    result[i->first.string()] = i->second.toJson();
   }
-  return result;
+
+  std::ofstream file(config);
+  if (file.is_open())
+  {
+    file << result.dump(4);
+  }
 }
 
 set FileMover::makeRelatieve(fs::path dirName, const set& exceptions) const
@@ -123,48 +139,100 @@ set FileMover::makeRelatieve(fs::path dirName, const set& exceptions) const
 
 details::FileRule FileMover::parseRule(const json& ruleJson) const
 {
-  std::string ruleType = ruleJson.at("ruleType").get<std::string>();
+  std::string ruleType = ruleJson.at("ruleType").get< std::string >();
   if (ruleType == "MovingByExtRule")
   {
-    path targetDir = ruleJson.at("targetDir");
-    paths ext = ruleJson.at("ext");
-    set exceptions = ruleJson.at("exceptions");
+    path targetDir = ruleJson.at("targetDir").get< std::string >();
+
+    paths ext;
+    auto stringExts = ruleJson.at("ext").get< std::vector< std::string > >();
+    for (const auto& extension: stringExts)
+    {
+      ext.emplace_back(extension);
+    }
+
+    set exceptions;
+    auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
+    for (const auto& exception: stringExceptions)
+    {
+      exceptions.insert(exception);
+    }
+
     return details::MovingByExtRule(targetDir, ext, exceptions);
   }
   else if (ruleType == "MovingByDateRule")
   {
-    path targetDir = ruleJson.at("targetDir");
+    path targetDir = ruleJson.at("targetDir").get<std::string>();
     size_t duration = ruleJson.at("duration");
     bool isGreaterThanDuration = ruleJson.at("isGreaterThanDuration");
-    set exceptions = ruleJson.at("exceptions");
+
+    set exceptions;
+    auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
+    for (const auto& exception: stringExceptions)
+    {
+      exceptions.insert(exception);
+    }
+
     return details::MovingByDateRule(targetDir, duration, isGreaterThanDuration, exceptions);
   }
   else if (ruleType == "MovingByNameRule")
   {
-    path targetDir = ruleJson.at("targetDir");
+    path targetDir = ruleJson.at("targetDir").get<std::string>();
     std::string name = ruleJson.at("name");
     bool isCheckRegister = ruleJson.at("isCheckRegister");
-    set exceptions = ruleJson.at("exceptions");
+
+    set exceptions;
+    auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
+    for (const auto& exception: stringExceptions)
+    {
+      exceptions.insert(exception);
+    }
+
     return details::MovingByNameRule(targetDir, name, isCheckRegister, exceptions);
   }
   else if (ruleType == "MovingAllRule")
   {
-    path targetDir = ruleJson.at("targetDir");
-    set exceptions = ruleJson.at("exceptions");
+    path targetDir = ruleJson.at("targetDir").get<std::string>();
+
+    set exceptions;
+    auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
+    for (const auto& exception: stringExceptions)
+    {
+      exceptions.insert(exception);
+    }
+
     return details::MovingAllRule(targetDir, exceptions);
   }
   else if (ruleType == "DeletingByExtRule")
   {
-    paths ext = ruleJson.at("ext");
-    set exceptions = ruleJson.at("exceptions");
+    paths ext;
+    auto stringExts = ruleJson.at("ext").get< std::vector< std::string > >();
+    for (const auto& extension: stringExts)
+    {
+      ext.emplace_back(extension);
+    }
+
+    set exceptions;
+    auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
+    for (const auto& exception: stringExceptions)
+    {
+      exceptions.insert(exception);
+    }
+
     return details::DeletingByExtRule(ext, exceptions);
   }
   else if (ruleType == "DeletingByDateRule")
   {
-    paths ext = ruleJson.at("ext");
     size_t duration = ruleJson.at("duration");
     bool isGreaterThanDuration = ruleJson.at("isGreaterThanDuration");
-    set exceptions = ruleJson.at("exceptions");
+
+    set exceptions;
+    auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
+    for (const auto& exception: stringExceptions)
+    {
+      exceptions.insert(exception);
+    }
+
     return details::DeletingByDateRule(duration, isGreaterThanDuration, exceptions);
   }
   else

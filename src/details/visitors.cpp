@@ -5,51 +5,70 @@ namespace fs = std::filesystem;
 
 json JsonVisitor::operator()(const MovingByExtRule& rule) const
 {
+  json ext = json::array();
+  std::transform(rule.ext.begin(), rule.ext.end(), std::back_inserter(ext), [](const fs::path& p) { return p.string(); });
+  json exceptions = json::array();
+  std::transform(rule.exceptions.begin(), rule.exceptions.end(), std::back_inserter(exceptions), [](const fs::path& p) { return p.string(); });
+
   return {
     { "ruleType", "MovingByExtRule" },
-    { "targetDir", rule.targetDir },
-    { "ext", rule.ext },
-    { "exceptions", rule.exceptions }
+    { "targetDir", rule.targetDir.string() },
+    { "ext", ext },
+    { "exceptions", exceptions }
   };
 }
 
 json JsonVisitor::operator()(const MovingByDateRule& rule) const
 {
+  json exceptions = json::array();
+  std::transform(rule.exceptions.begin(), rule.exceptions.end(), std::back_inserter(exceptions), [](const fs::path& p) { return p.string(); });
+
   return {
     { "ruleType", "MovingByDateRule" },
-    { "targetDir", rule.targetDir },
+    { "targetDir", rule.targetDir.string() },
     { "duration", rule.duration.count() },
     { "isGreaterThanDuration", rule.isGreaterThanDuration },
-    { "exceptions", rule.exceptions }
+    { "exceptions", exceptions }
   };
 }
 
 json JsonVisitor::operator()(const MovingByNameRule& rule) const
 {
+  json exceptions = json::array();
+  std::transform(rule.exceptions.begin(), rule.exceptions.end(), std::back_inserter(exceptions), [](const fs::path& p) { return p.string(); });
+
   return {
     { "ruleType", "MovingByNameRule" },
-    { "targetDir", rule.targetDir },
+    { "targetDir", rule.targetDir.string() },
     { "name", rule.name },
     { "isCheckRegister", rule.isCheckRegister },
-    { "exceptions", rule.exceptions }
+    { "exceptions", exceptions }
   };
 }
 
 json JsonVisitor::operator()(const MovingAllRule& rule) const
 {
+  json exceptions = json::array();
+  std::transform(rule.exceptions.begin(), rule.exceptions.end(), std::back_inserter(exceptions), [](const fs::path& p) { return p.string(); });
+
   return {
     { "ruleType", "MovingAllRule" },
-    { "targetDir", rule.targetDir },
-    { "exceptions", rule.exceptions }
+    { "targetDir", rule.targetDir.string() },
+    { "exceptions", exceptions }
   };
 }
 
 json JsonVisitor::operator()(const DeletingByExtRule& rule) const
 {
+  json ext = json::array();
+  std::transform(rule.ext.begin(), rule.ext.end(), std::back_inserter(ext), [](const fs::path& p) { return p.string(); });
+  json exceptions = json::array();
+  std::transform(rule.exceptions.begin(), rule.exceptions.end(), std::back_inserter(exceptions), [](const fs::path& p) { return p.string(); });
+
   return {
     { "ruleType", "DeletingByExtRule" },
-    { "ext", rule.ext },
-    { "exceptions", rule.exceptions }
+    { "ext", ext },
+    { "exceptions", exceptions }
   };
 }
 
@@ -62,6 +81,10 @@ json JsonVisitor::operator()(const DeletingByDateRule& rule) const
     { "exceptions", rule.exceptions }
   };
 }
+
+RuleVisitor::RuleVisitor(fs::path dirPath):
+  dirPath_(dirPath)
+{}
 
 void RuleVisitor::operator()(const MovingByExtRule& rule) const
 {
@@ -80,7 +103,7 @@ void RuleVisitor::operator()(const MovingByExtRule& rule) const
     {
       for (auto j = rule.ext.cbegin(); j != rule.ext.cend(); ++j)
       {
-        if (fs::equivalent((*i).path().extension(), *j))
+        if ((*i).path().extension() == *j)
         {
           files.push_back(*i);
           break;
@@ -197,7 +220,7 @@ void RuleVisitor::operator()(const DeletingByExtRule& rule) const
     {
       for (auto j = rule.ext.cbegin(); j != rule.ext.cend(); ++j)
       {
-        if (fs::equivalent((*i).path().extension(), *j))
+        if ((*i).path().extension() == *j)
         {
           files.push_back(*i);
           break;
