@@ -1,55 +1,50 @@
-import QtQuick 2.15
+import QtQuick
 
 Item {
-    id: dirManager
-    function containsItem(searchText, modelName) {
-        for (var i = 0; i < modelName.count; i++) {
-            if (modelName.get(i).dirName === searchText) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function findIndex(searchText, modelName) {
-        for (var i = 0; i < modelName.count; i++) {
-            if (modelName.get(i).dirName === searchText) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    id: fileManager
 
     anchors.fill: parent
+
     Rectangle {
         id: fileArea
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: 550
+
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+
         color: selectColor
 
         Loader {
+            id: listLoader
+
+            source: tabBarLoader.item.currentTabIndex === 0 ? "DirList.qml" : "RuleList.qml"
             anchors.fill: parent
-            source: "DirManagerList.qml"
         }
+
+        height: tabBarLoader.item ? tabBarLoader.item.currentTabIndex === 0 ? root.height / 1.31 : root.height / 1.5 : root.height / 1.5
     }
 
     Rectangle {
         id: taskBar
-        anchors.top: fileArea.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
+
+        anchors {
+            top: fileArea.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+
         color: secondaryColor
 
-        Loader {
-            anchors.fill: parent
-            source: "DirManagerTaskBar.qml"
-        }
-    }
+        enabled: !fileMover.isWatching
 
-    ListModel {
-        id: contact
+        Loader {
+            id: taskBarLoader
+
+            source: tabBarLoader.item.currentIndex === 0 ? "DirTaskBar.qml" : "RuleTaskBar.qml"
+            anchors.fill: parent
+        }
     }
 }
