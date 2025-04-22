@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QFileSystemWatcher>
 #include "rules_model.h"
-#include "C:\\Users\\Dmitr\\Documents\\File-Mover\\src\\file_mover.hpp"
+#include "src/file_mover.hpp"
 
 class FileMoverWrapper: public QObject
 {

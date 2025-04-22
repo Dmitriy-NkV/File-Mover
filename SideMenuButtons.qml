@@ -25,7 +25,7 @@ Item {
             id: startSortButton
 
             background: Image {
-                source: fileMover.isWatching ? "images/pause-button.png" : "images/play-button.png"
+                source: fileMover ? fileMover.isWatching ? "images/pause-button.png" : "images/play-button.png" :  "images/play-button.png"
 
                 sourceSize {
                     width: root.width / 32
@@ -41,7 +41,7 @@ Item {
         Button {
             id: exportConfigButton
 
-            enabled: !fileMover.isWatching
+            enabled: fileMover ? !fileMover.isWatching : true
 
             background: Image {
                 source: "images/file-export.png"
@@ -60,7 +60,7 @@ Item {
         Button {
             id: importConfigButton
 
-            enabled: !fileMover.isWatching
+            enabled: fileMover ? !fileMover.isWatching : true
 
             background: Image {
                 source: "images/file-import.png"
@@ -79,7 +79,7 @@ Item {
         Button {
             id: addConfigButton
 
-            enabled: !fileMover.isWatching
+            enabled: fileMover ? !fileMover.isWatching : true
 
             background: Image {
                 source: "images/file.png"
@@ -99,7 +99,7 @@ Item {
     Button {
         id: settingsButton
 
-        enabled: !fileMover.isWatching
+        enabled: fileMover ? !fileMover.isWatching : true
 
         anchors {
             horizontalCenter: parent.horizontalCenter

@@ -8,7 +8,7 @@
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  app.setWindowIcon(QIcon("C:/Users/Dmitr/Documents/File-Mover/File-Mover/images/icon.png"));
+  app.setWindowIcon(QIcon(":/images/icon.png"));
 
   qmlRegisterType<TrayIcon>("TrayIcon", 1, 0, "TrayIcon");
 
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
   FileMoverWrapper wrapper;
   engine.rootContext()->setContextProperty("fileMover", &wrapper);
-  engine.load("C:/Users/Dmitr/Documents/File-Mover/File-Mover/Main.qml");
+  engine.load(":/Main.qml");
 
   return app.exec();
 }

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <filesystem>
-#include "../additionals/json.hpp"
+#include <nlohmann/json.hpp>
 #include "rules.hpp"
 #include "visitors.hpp"
 

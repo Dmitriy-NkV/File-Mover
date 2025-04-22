@@ -10,7 +10,7 @@ Item {
         id: dirList
 
         anchors.fill: parent
-        model: fileMover.dirs
+        model: fileMover ? fileMover.dirs : []
         boundsBehavior: Flickable.StopAtBounds
         currentIndex: -1
         clip: true

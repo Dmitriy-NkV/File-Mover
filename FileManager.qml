@@ -38,7 +38,7 @@ Item {
 
         color: secondaryColor
 
-        enabled: !fileMover.isWatching
+        enabled: fileMover ? !fileMover.isWatching : true
 
         Loader {
             id: taskBarLoader

@@ -2,7 +2,7 @@
 #define VISITORS_HPP
 
 #include <regex>
-#include "../additionals/json.hpp"
+#include <nlohmann/json.hpp>
 #include "rules.hpp"
 
 using json = nlohmann::json;

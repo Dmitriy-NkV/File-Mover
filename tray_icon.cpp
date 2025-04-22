@@ -7,7 +7,7 @@ TrayIcon::TrayIcon(QObject *parent):
   QObject(parent)
 {
   trayIcon_ = new QSystemTrayIcon(this);
-  trayIcon_->setIcon(QIcon("C:/Users/Dmitr/Documents/File-Mover/File-Mover/images/icon.png"));
+  trayIcon_->setIcon(QIcon(":/images/icon.png"));
 
   menu_ = new QMenu();
   QAction* restoreAction = menu_->addAction("Восстановить");

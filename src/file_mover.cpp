@@ -1,5 +1,4 @@
 #include "file_mover.hpp"
-#include <iostream>
 
 void FileMover::addDir(fs::path dirName)
 {

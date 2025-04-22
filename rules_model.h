@@ -2,7 +2,7 @@
 #define RULES_MODEL_H
 
 #include <QAbstractListModel>
-#include "C:\\Users\\Dmitr\\Documents\\File-Mover\\src\\file_mover.hpp"
+#include "src/file_mover.hpp"
 
 class RulesModel: public QAbstractListModel
 {
