@@ -1,24 +1,22 @@
-#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QApplication>
+#include <QIcon>
 #include "file_mover_wrapper.h"
+#include "tray_icon.h"
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+  QApplication app(argc, argv);
+  app.setWindowIcon(QIcon("C:/Users/Dmitr/Documents/File-Mover/File-Mover/images/icon.png"));
 
-    FileMoverWrapper wrapper;
+  qmlRegisterType<TrayIcon>("TrayIcon", 1, 0, "TrayIcon");
 
-    QQmlApplicationEngine engine;
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
+  QQmlApplicationEngine engine;
 
-    engine.rootContext()->setContextProperty("fileMover", &wrapper);
-    engine.load("C:/Users/Dmitr/Documents/File-Mover/File-Mover/Main.qml");
+  FileMoverWrapper wrapper;
+  engine.rootContext()->setContextProperty("fileMover", &wrapper);
+  engine.load("C:/Users/Dmitr/Documents/File-Mover/File-Mover/Main.qml");
 
-    return app.exec();
+  return app.exec();
 }
