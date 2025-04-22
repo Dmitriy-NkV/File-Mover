@@ -1,5 +1,7 @@
 #include "dir.hpp"
 
+#include <iostream>
+
 using namespace details;
 
 Dir::Dir(const std::vector< FileRule >& rules):
