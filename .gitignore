@@ -1,0 +1,7 @@
+makefile
+file_mover
+
+*.json
+
+/test
+.vscode/
