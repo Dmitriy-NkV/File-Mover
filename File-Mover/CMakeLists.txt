@@ -4,7 +4,7 @@ project(File-Mover VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Widgets)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -18,15 +18,21 @@ qt_add_qml_module(appFile-Mover
     QML_FILES
         Main.qml
         SOURCES
-        QML_FILES DirManagerList.qml
+        QML_FILES DirList.qml
         QML_FILES
-        QML_FILES DirManagerTaskBar.qml
-        QML_FILES DirManager.qml
+        QML_FILES DirTaskBar.qml
+        QML_FILES FileManager.qml
         RESOURCES images/file-export.png images/file-import.png images/file-minus.png images/file.png images/pause-button.png images/play-button.png images/setting.png
-        QML_FILES RuleManager.qml
+        QML_FILES RuleList.qml
         SOURCES file_mover_wrapper.h file_mover_wrapper.cpp
         SOURCES ../src/file_mover.cpp ../src/file_mover.hpp
         SOURCES ../src/additionals/json.hpp ../src/details/dir.cpp ../src/details/dir.hpp ../src/details/rules.hpp ../src/details/visitors.cpp ../src/details/visitors.hpp ../src/file_mover.cpp ../src/file_mover.hpp
+        QML_FILES TabBar.qml
+        QML_FILES SideMenuButtons.qml
+        QML_FILES RuleTaskBar.qml
+        SOURCES rules_model.h rules_model.cpp
+        RESOURCES images/icon.png
+        SOURCES tray_icon.h tray_icon.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -42,6 +48,7 @@ set_target_properties(appFile-Mover PROPERTIES
 
 target_link_libraries(appFile-Mover
     PRIVATE Qt6::Quick
+    PRIVATE Qt6::Widgets
 )
 
 include(GNUInstallDirs)
