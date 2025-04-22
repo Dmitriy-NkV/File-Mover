@@ -1,195 +1,106 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Dialogs
-import QtQuick.Layouts
+import QtQuick
+import QtQuick.Controls
 import QtQuick.Controls.Universal
+import TrayIcon
 
 ApplicationWindow {
+    id: root
     visible: true
     width: 1280
     height: 720
     title: "File-Mover"
 
-    property string mainColor: "#DEE2E6"
-    property string secondaryColor: "#adb5bd"
-    property string selectColor: "#f8f9fa"
-
     Component.onCompleted: {
         ApplicationWindow.style = Universal
     }
 
-
-    Rectangle {
-        id: header
-        anchors.top: parent.top
-        anchors.left: sideMenu.right
-        anchors.right: parent.right
-        height: 40
-        color: secondaryColor
-
-        TabBar {
-            id: tabBar
-            anchors.fill: parent
-            background: Rectangle {
-                color: "transparent"
-            }
-
-            ListModel {
-                id: tabModel
-                ListElement { dirName: "Главная" }
-                ListElement { dirName: "Поиск" }
-                ListElement { dirName: "Настройки" }
-            }
-            Repeater {
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                model: tabModel
-                delegate: TabButton {
-                    text: dirName
-                    background: Rectangle {
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        implicitWidth: 100
-                        color: secondaryColor
-                    }
-                    Rectangle {
-                        anchors.right: parent.right
-                        width: 2
-                        height: parent.height
-                        color: "black"
-                        visible: index !== tabModel.count - 1
-                    }
-                    Rectangle {
-                        anchors.top: parent.top
-                        width: parent.width
-                        height: 2
-                        color: "black"
-                    }
-                    Rectangle {
-                        anchors.bottom: parent.bottom
-                        width: parent.width
-                        height: 2
-                        color: "black"
-                        visible: tabBar.currentIndex !== index
-                    }
-
-                    Button {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
-                        anchors.rightMargin: 10
-                        width: 20
-                        height: 20
-
-                        background: Rectangle {
-                            anchors.fill: parent
-                            color: mainColor
-                            visible: parent.hovered ? true : false
-                        }
-
-                        Text {
-                            text: "✕"
-                            anchors.centerIn: parent
-                        }
-
-                        onClicked: {
-                            tabModel.remove(index)
-                        }
-                        visible: index !== 0
-                    }
-                }
+    function findIndex(searchText, modelName) {
+        for (var i = 0; i < modelName.count; i++) {
+            if (modelName.get(i).dirName === searchText) {
+                return i;
             }
         }
+        return -1;
+    }
 
-        Rectangle {
-            anchors.bottom: parent.bottom
-            anchors.left: tabBar.right
-            anchors.right: parent.right
-            height: 2
-            color: "black"
+    TrayIcon {
+        id: trayIcon
+
+        onActivated: {
+            root.show()
+            root.raise()
+            root.requestActivate()
         }
     }
 
+    onClosing: function(close) {
+        if (Qt.platform.os === "windows" || Qt.platform.os === "linux") {
+            close.accepted = false
+            trayIcon.minimizeToTray()
+        }
+    }
+
+    property string mainFont: "Onest"
+    property string mainColor: "#DEE2E6"
+    property string secondaryColor: "#adb5bd"
+    property string selectColor: "#f8f9fa"
+
     Rectangle {
         id: sideMenu
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        width: 100
+
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            left: parent.left
+        }
+        width: parent.width / 12.8
         color: mainColor
 
-        Column {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top: parent.top
-            anchors.topMargin: 20
-            spacing: 30
+        Loader {
+            id: sideMenuButtonsLoader
 
-            Button {
-                background: Image {
-                    sourceSize.width: 40
-                    source: "images/play-button.png"
-                }
-            }
-
-            Button {
-                background: Image {
-                    sourceSize.width: 40
-                    source: "images/file-export.png"
-                }
-            }
-
-            Button {
-                background: Image {
-                    sourceSize.width: 40
-                    source: "images/file-import.png"
-                }
-            }
-
-            Button {
-                background: Image {
-                    sourceSize.width: 40
-                    source: "images/file.png"
-                }
-            }
-
-            Button {
-                background: Image {
-                    sourceSize.width: 40
-                    source: "images/file-minus.png"
-                }
-            }
-        }
-
-        Button {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            background: Image {
-                sourceSize.width: 40
-                source: "images/setting.png"
-            }
+            source: "SideMenuButtons.qml"
+            anchors.fill: parent
         }
 
         Rectangle {
             anchors.right: parent.right
-            width: 4
+            width: root.width / 320
             height: parent.height
             color: "black"
         }
     }
 
-    Loader {
-        id: mainPart
-        anchors.top: header.bottom
-        anchors.left: sideMenu.right
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        source: tabBar.currentIndex === 0 ? "DirManager.qml" : "RuleManager.qml"
+    Rectangle {
+        id: header
+
+        anchors {
+            top: parent.top
+            left: sideMenu.right
+            right: parent.right
+        }
+
+        height: parent.height / 18
+        color: secondaryColor
+
+        Loader {
+            id: tabBarLoader
+
+            source: "TabBar.qml"
+            anchors.fill: parent
+        }
     }
 
+    Loader {
+        id: mainPart
 
-    Component {
-        id: tabButton
-        TabButton { }
+        source: "FileManager.qml"
+
+        anchors {
+            top: header.bottom
+            left: sideMenu.right
+            right: parent.right
+            bottom: parent.bottom
+        }
     }
 }
