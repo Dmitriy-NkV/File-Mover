@@ -10,8 +10,8 @@ TrayIcon::TrayIcon(QObject *parent):
   trayIcon_->setIcon(QIcon("C:/Users/Dmitr/Documents/File-Mover/File-Mover/images/icon.png"));
 
   menu_ = new QMenu();
-  QAction* restoreAction = menu_->addAction("Restore");
-  QAction* quitAction = menu_->addAction("Quit");
+  QAction* restoreAction = menu_->addAction("Восстановить");
+  QAction* quitAction = menu_->addAction("Закрыть");
   connect(quitAction, &QAction::triggered, this, &TrayIcon::quitApplication);
 
   connect(restoreAction, &QAction::triggered, this, &TrayIcon::activated);
