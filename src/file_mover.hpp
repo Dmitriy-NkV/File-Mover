@@ -10,6 +10,7 @@ namespace fs = std::filesystem;
 
 class FileMover
 {
+    friend class RulesModel;
 public:
   FileMover() = default;
   ~FileMover() = default;
@@ -29,8 +30,10 @@ public:
   void execDir(fs::path dirName) const;
   void execDirs() const;
 
+  paths getDirs() const;
+
   void importConfig(fs::path config);
-  json saveConfig() const;
+  void saveConfig(fs::path config) const;
 
 private:
   template < class Rule, class... Args >

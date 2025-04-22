@@ -1,4 +1,5 @@
 #include "file_mover.hpp"
+#include <iostream>
 
 void FileMover::addDir(fs::path dirName)
 {
@@ -79,6 +80,16 @@ void FileMover::execDirs() const
   }
 }
 
+paths FileMover::getDirs() const
+{
+    paths dirs;
+    for (auto i = dirs_.cbegin(); i != dirs_.cend(); ++i)
+    {
+        dirs.push_back(i->first);
+    }
+    return dirs;
+}
+
 void FileMover::importConfig(fs::path configPath)
 {
   std::ifstream file(configPath);
@@ -100,14 +111,19 @@ void FileMover::importConfig(fs::path configPath)
   dirs_ = newDirs;
 }
 
-json FileMover::saveConfig() const
+void FileMover::saveConfig(fs::path config) const
 {
   json result = json::object();
   for (auto i = dirs_.cbegin(); i != dirs_.cend(); ++i)
   {
     result[i->first.string()] = i->second.toJson();
   }
-  return result;
+
+  std::ofstream file(config);
+  if (file.is_open())
+  {
+    file << result.dump(4);
+  }
 }
 
 set FileMover::makeRelatieve(fs::path dirName, const set& exceptions) const
@@ -130,16 +146,16 @@ details::FileRule FileMover::parseRule(const json& ruleJson) const
 
     paths ext;
     auto stringExts = ruleJson.at("ext").get< std::vector< std::string > >();
-    for (const auto& extension : stringExts)
+    for (const auto& extension: stringExts)
     {
       ext.emplace_back(extension);
     }
 
     set exceptions;
     auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
-    for (const auto& exception : stringExceptions)
+    for (const auto& exception: stringExceptions)
     {
-      exceptions.emplace(exception);
+      exceptions.insert(exception);
     }
 
     return details::MovingByExtRule(targetDir, ext, exceptions);
@@ -152,9 +168,9 @@ details::FileRule FileMover::parseRule(const json& ruleJson) const
 
     set exceptions;
     auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
-    for (const auto& exception : stringExceptions)
+    for (const auto& exception: stringExceptions)
     {
-      exceptions.emplace(exception);
+      exceptions.insert(exception);
     }
 
     return details::MovingByDateRule(targetDir, duration, isGreaterThanDuration, exceptions);
@@ -167,9 +183,9 @@ details::FileRule FileMover::parseRule(const json& ruleJson) const
 
     set exceptions;
     auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
-    for (const auto& exception : stringExceptions)
+    for (const auto& exception: stringExceptions)
     {
-      exceptions.emplace(exception);
+      exceptions.insert(exception);
     }
 
     return details::MovingByNameRule(targetDir, name, isCheckRegister, exceptions);
@@ -180,9 +196,9 @@ details::FileRule FileMover::parseRule(const json& ruleJson) const
 
     set exceptions;
     auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
-    for (const auto& exception : stringExceptions)
+    for (const auto& exception: stringExceptions)
     {
-      exceptions.emplace(exception);
+      exceptions.insert(exception);
     }
 
     return details::MovingAllRule(targetDir, exceptions);
@@ -191,16 +207,16 @@ details::FileRule FileMover::parseRule(const json& ruleJson) const
   {
     paths ext;
     auto stringExts = ruleJson.at("ext").get< std::vector< std::string > >();
-    for (const auto& extension : stringExts)
+    for (const auto& extension: stringExts)
     {
       ext.emplace_back(extension);
     }
 
     set exceptions;
     auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
-    for (const auto& exception : stringExceptions)
+    for (const auto& exception: stringExceptions)
     {
-      exceptions.emplace(exception);
+      exceptions.insert(exception);
     }
 
     return details::DeletingByExtRule(ext, exceptions);
@@ -212,9 +228,9 @@ details::FileRule FileMover::parseRule(const json& ruleJson) const
 
     set exceptions;
     auto stringExceptions = ruleJson.at("exceptions").get< std::vector< std::string > >();
-    for (const auto& exception : stringExceptions)
+    for (const auto& exception: stringExceptions)
     {
-      exceptions.emplace(exception);
+      exceptions.insert(exception);
     }
 
     return details::DeletingByDateRule(duration, isGreaterThanDuration, exceptions);
