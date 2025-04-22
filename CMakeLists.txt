@@ -7,12 +7,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Подключаем зависимости
 add_subdirectory(extern/json)
 find_package(Qt6 REQUIRED COMPONENTS Quick Widgets)
 qt_standard_project_setup(REQUIRES 6.8)
 
-# Исходные файлы
 set(SOURCES
     core/file_mover_wrapper.h
     core/file_mover_wrapper.cpp
@@ -29,7 +27,6 @@ set(SOURCES
     core/tray_icon.cpp
 )
 
-# QML-файлы
 set(QML_FILES
     app/qml/Main.qml
     app/qml/FileManager.qml
@@ -40,13 +37,11 @@ set(QML_FILES
     app/qml/TabBar.qml
 )
 
-# Создаём приложение
 qt_add_executable(File-Mover
     app/main.cpp
     ${SOURCES}
 )
 
-# Подключаем QML-модуль
 qt_add_qml_module(File-Mover
     URI File-Mover
     VERSION 1.0
@@ -55,14 +50,12 @@ qt_add_qml_module(File-Mover
     RESOURCES app/resources.qrc
 )
 
-# Линковка библиотек
 target_link_libraries(File-Mover
     PRIVATE Qt6::Quick
     PRIVATE Qt6::Widgets
     PRIVATE nlohmann_json::nlohmann_json
 )
 
-# Установка
 include(GNUInstallDirs)
 install(TARGETS File-Mover
     BUNDLE DESTINATION .
