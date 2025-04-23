@@ -1,21 +1,28 @@
-# File-Mover
+# File-Mover v1.0.0
+**A program for monitoring and cleaning the file system.**
 <div>
 <img src="https://img.shields.io/badge/C%2B%2B17-blue?logo=cplusplus"/>
 <img src="https://img.shields.io/badge/Qt_6-darkgreen?logo=qt"/>
+<img src="https://img.shields.io/badge/Linux-red?logo=linux"/>
+<img src="https://img.shields.io/badge/Windows-blue?"/>
 </div>
-A program for monitoring and cleaning the file system.
 
 ## What can the program do?
-The program allows you to manage files using a set of simple rules. The rules are configured separately for each folder. There is regex support, and it is also possible to work in the tray.
+**The program allows you to manage files using a set of simple rules. The rules are configured separately for each folder.**
+### Features:
+ - Linux and Windows support;
+ - Regex support;
+ - Work in the tray.
 
 ## How program works?
 Using the graphical application, you specify the folders in which the files will be monitored. When the program detects changes in one of the specified folders, the sorter is started, which sequentially goes through all the rules for this folder to move and delete. To work properly, run the program as an administrator.
 
-## Instruction
-When you open the app, you are greeted by the folder management screen. The control panel for configs and the program is marked in red. The editor is highlighted in blue.
-
+## Program structure
+When you open the app, you are greeted by the folder management screen.
 The program is navigated by switching the tabbar.
-You can add rules tab by double-clicking on the folder.
+
+> [!Note]
+> You can add rules tab by double-clicking on the folder.
 
 ### The sidebar:
 - The program control button. Starts sorting and monitoring. The program will not start if there are no rules;
@@ -38,14 +45,16 @@ Supported types of rules:
 - By name (with regex support);
 - All files.
 
-You can add exceptions to each rule.
+> [!Note]
+> You can add exceptions to each rule.
 
-If you are working inside a folder and sorting into its subfolders, add all target folders to each other as exceptions. This will avoid cyclical checks.
+> [!WARNING]
+> If you are working inside a folder and sorting into its subfolders, add all target folders to each other as exceptions. This will avoid cyclical checks.
 
-When the main window is closed, the program is automatically minimized to the tray.  Use it to restore the program or permanently close it.
+**When the main window is closed, the program is automatically minimized to the tray.  Use it to restore the program or permanently close it.**
 
 ## Requirments
-The program requires the C++17 standard and Qt6 to compile.
+**The program requires the C++17 standard and Qt6 to compile.**
 
 ## Commit Description
 | Name     | Description                                                     |
