@@ -21,8 +21,7 @@ Using the graphical application, you specify the folders in which the files will
 When you open the app, you are greeted by the folder management screen.
 The program is navigated by switching the tabbar.
 
-> [!Note]
-> You can add rules tab by double-clicking on the folder.
+![image](https://github.com/user-attachments/assets/d82a0193-9ff4-46bc-b94d-9ea9a84d2faa)
 
 ### The sidebar:
 - The program control button. Starts sorting and monitoring. The program will not start if there are no rules;
@@ -33,6 +32,11 @@ The program is navigated by switching the tabbar.
 
 ### Editor Panel - Folders:
 Add the entered folder or delete the selected one. The program will not allow you to add one folder twice.
+
+> [!Note]
+> You can add rules tab by double-clicking on the folder.
+
+![6bc1d6ae-c568-4591-9b10-8f52ec7a794f](https://github.com/user-attachments/assets/65bb58b8-9b70-47a8-a60a-e47ff89ad85f)
 
 ### Editor Panel - Rules:
 Supported actions:
@@ -52,6 +56,9 @@ Supported types of rules:
 > If you are working inside a folder and sorting into its subfolders, add all target folders to each other as exceptions. This will avoid cyclical checks.
 
 **When the main window is closed, the program is automatically minimized to the tray.  Use it to restore the program or permanently close it.**
+
+## Example of adding rules and importing:
+![Видео без названия — сделано в Clipchamp](https://github.com/user-attachments/assets/422d83b6-df89-42aa-9cee-d59d7a389d44)
 
 ## Requirments
 **The program requires the C++17 standard and Qt6 to compile.**
